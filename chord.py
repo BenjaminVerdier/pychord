@@ -59,7 +59,7 @@ class Node(object):
 
     def setsuccessor(self, successor):
         self.successor = successor
-    
+
     def addToRing(self, newnode):
         '''
         @param newnode : Node to interact first with the ring
@@ -80,7 +80,7 @@ class Node(object):
         if self == self.successor:
             self.setsuccessor(newnode)
             newnode.setsuccessor(self)
-        
+
         elif newnode.uid.isbetween(self.uid.value, self.successor.uid.value):
             newnode.setsuccessor(self.successor)
             self.setsuccessor(newnode)
@@ -111,9 +111,9 @@ class Node(object):
         '''
         return self.lookup(self.calcfinger(k), useOnlySucc)
 
-            
+
     def lookup(self, key, useOnlySucc=False):
-        
+
         if isinstance(key, Node):
             key = node.uid
         elif isinstance(key, Key):
@@ -132,24 +132,24 @@ class Node(object):
                 raise Exception("getNetxtDichotomy used with invalid sign")
             elif sign is "+":
                 if prevDichotomy < dichotomy:
-                    return dichotomy + ((nfinger - dichotomy) / 2)
+                    return dichotomy + ((nfinger - dichotomy) // 2)
                 else:
-                    return dichotomy + ((prevDichotomy - dichotomy) / 2)
+                    return dichotomy + ((prevDichotomy - dichotomy) // 2)
             elif sign is "-":
                 if prevDichotomy < dichotomy:
-                    return dichotomy - ((dichotomy - prevDichotomy) / 2)
+                    return dichotomy - ((dichotomy - prevDichotomy) // 2)
                 else:
-                    return dichotomy - (dichotomy / 2)
+                    return dichotomy - (dichotomy // 2)
 
         # lookup on successor and then ask to the successor
         if useOnlySucc:
             # Self is successor ?
             if self.uid == key:
                 return self
-            # Is self.successor the successor of key ? 
+            # Is self.successor the successor of key ?
             if key.isbetween(self.uid.value, self.successor.uid.value):
                 return self.successor
-            
+
             return self.successor.lookup(key, useOnlySucc)
 
         # Use finger table to optim lookup
@@ -173,7 +173,7 @@ class Node(object):
                           )
             # self knows the answer because key < (self finger max)
 
-            dichotomy = nfinger / 2
+            dichotomy = nfinger // 2
             prevDichotomy = 0
             # algorithm by dichotomy
             while True:
@@ -185,7 +185,7 @@ class Node(object):
                     self.log.debug("Assigns {} as succ for {}"
                             .format(self.finger[dichotomy]["resp"], key))
                     return self.finger[dichotomy]["resp"]
-                    
+
                 elif key.isbetween(self.finger[0]["key"] + 1,
                                  self.finger[dichotomy]["key"] - 1):
                     self.log.debug("key down to dichotomy: dichotomy:{} -"
@@ -256,7 +256,7 @@ class Node(object):
                     self.log.error("OUT OF TOWN")
                     raise IndexError("lookup failed on properly catching the inclusion of the key.")
 
- 
+
     def calcfinger(self, k):
         '''
         Returns computed key for finger k

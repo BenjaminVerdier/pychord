@@ -62,7 +62,7 @@ class Key(object):
         Returns the str repr of hexa value with the right number of hexa char
         Basically padd the input with'0' and get rid of '0x' and 'L'
         '''
-        return format(value, '0>{}x'.format(self.idlength/4))
+        return format(value, '0>{}x'.format(self.idlength//4))
 
     def __add__(self, value):
         if isinstance(value, int) or isinstance(value, int):
@@ -82,10 +82,12 @@ class Key(object):
         @param value: int to sum with uid value
         '''
         res = (int(self.value, 16) + value) % pow(2, self.idlength)
+
         return self.canonicalize(res)
 
     def sumhex(self, value):
         res = (int(self.value, 16) + int(value, 16)) % pow(2, self.idlength)
+
         return self.canonicalize(res)
 
     def __sub__(self, value):
@@ -105,6 +107,7 @@ class Key(object):
         @param value: int to sub with uid value
         '''
         res = (int(self.value, 16) - value) % pow(2, self.idlength)
+
         return self.canonicalize(res)
 
     def subhex(self, value):
@@ -113,6 +116,7 @@ class Key(object):
         @param value: str repr of hexa number
         '''
         res = (int(self.value, 16) - int(value, 16)) % pow(2, self.idlength)
+
         return self.canonicalize(res)
 
     def __len__(self):
